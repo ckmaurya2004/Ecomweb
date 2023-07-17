@@ -3,15 +3,9 @@ from django.http import HttpResponse
 from . models import Product,Contact,Order,OrderUpdates
 from math import ceil
 import json
-
-
 # Create your views here.
 def index(request):
     products = Product.objects.all()
-   # n = len(products)
-   # nslides = (n//4) + ceil((n/4) + (n//4))
-    #param = {'no_of_slide':nslides,'range':range(1,nslides),'product':products}
-    #allprods = [[products,range(1,nslides),nslides],[products,range(1,nslides),nslides]]
     allprods = []
     catprods = Product.objects.values('category','id')
     cats = {item['category'] for item  in catprods}
@@ -65,7 +59,6 @@ def contact(request):
           contact.save()
           thanks = True
           return render(request, 'shop/contact.html',{'thanks': thanks}) 
-
      return render(request , 'shop/contact.html')
 
 
@@ -84,11 +77,8 @@ def tracker(request):
                 return HttpResponse(response)
             else:
                 return HttpResponse('{}')
-
         except Exception as e :
             return HttpResponse('{}')
-
-
     return render(request, 'shop/tracker.html')
         
    
@@ -115,8 +105,6 @@ def checkout(request):
         update.save()
         thanks = True
         id = order.order_id
-        return render(request, 'shop/checkout.html',{'thanks': thanks,'id':id}) 
-        #Request paytem to transfer the amount to your account after payment by user
-      
+        return render(request, 'shop/checkout.html',{'thanks': thanks,'id':id})     
     return render(request ,'shop/checkout.html') 
 
